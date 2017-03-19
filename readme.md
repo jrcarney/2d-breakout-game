@@ -9,11 +9,12 @@ We also organised our code into single purpose functions, to make our code more 
 
 ### Drawing a moving ball to the canvas
 - [ ] We reused the html structure, canvas element, canvas ID and 2D rendering context from lesson 1
-- [ ] Initialised the starting position of the ball when the program loads
+- [ ] Initialised the starting position of the ball when the program loads in variables `x` and `y`
 - [ ] Initialised the ball postion in `dx` and `dy` variables (these get updated in our 'draw loop' during program execution)
-- [ ] We used javascripts `setInterval` function (with an interval of 10 milliseconds) to call our custom`draw()` function
+- [ ] We used javascripts `setInterval()` function (with an interval of 10 milliseconds) to call our custom`draw()` function
 - [ ] Our `draw()` function takes care of 
- - [ ] - Clearing the canvas: this forms of the 'ball moving' illusion
+ - [ ] - Clearing the canvas: this forms part of the 'ball moving' illusion
  - [ ] - Invoking the `drawBall()` function: this actually takes care of drawing the ball to the canvas
- - [ ] - Update the `dx` variables after drawBall() invoction ()
+ - [ ] - Updating the `dx` and `dy` variables after drawBall() invoction (the ball will gets a new postion on the canvas)
+- The call stack is returned to `setInterval()` and it repeats the process
 
