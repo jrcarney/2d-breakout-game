@@ -1,4 +1,4 @@
-## Lesson two: HTML structure Canvas basics
+## Lesson two: Moving the ball by defining a drawing loop
 In this lesson we learned how to setup a drawing loop which repaints a ball to the canvas every 10 milliseconds.
 
 We made the ball move by updating its x and y axis every 10 milliseconds but hit an issue with the ball leaving a 'trail'. To remove the 'trail', we cleared the canvas enabling the illusion the ball is moving.
