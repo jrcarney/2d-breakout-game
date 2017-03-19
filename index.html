@@ -20,63 +20,69 @@
 	<canvas id="myCanvas" width="480" height="320"></canvas>
 
 	<script>
-	/****************************************************************
-	 * Shape 1: red rectangle
-	 ***************************************************************/
+	/**
+	 * Draw a ball that moves across and up the canvas every 10 milliseconds
+	 */
 
-		// Store reference to the canvas element
-		var canvas = document.getElementById("myCanvas");
+		(function() {
 
-		// Store reference to 2D rendering context 
-		// - the tool we can use for painting to the Canvas
-		var ctx = canvas.getContext("2d");
+			//debugger
 
-		// Creates a path so we can start drawing
-		ctx.beginPath();
+			/********************************************************/
+			// # SETUP OUR CANVAS AND PROPERTIES 
+			/********************************************************/
 
-		// @param 20: 20px from the left of the canvas, 
-		// @param 40: 40px from the top of the canvas, 
-		// @param 50: 50px wide rectangle
-		// @param 50: 50px high rectangle
-		ctx.rect(20, 40, 50, 50);
+			// Store reference to the canvas element
+			var canvas = document.getElementById("myCanvas");
 
-		// the colour of our rectangle
-		ctx.fillStyle = "#FF0000";
+			// Store reference to 2D rendering context 
+			// - the tool we can use for painting to the Canvas
+			var ctx = canvas.getContext("2d");
 
-		// paints the rectangle with the fillStyle colour
-		ctx.fill();
+			// Initial ball position: Define the ball postion on the canvas
+			var x = canvas.width/2;
+			var y = canvas.height-30;
 
-		// Closes the path and we finish drawing
-		ctx.closePath();
+			// New ball position: 
+			// Define the amount the ball should move across and up the canvas
+			// NOTE: Changing dxvalues increase
+			var dx = 2;
+			var dy = -2;
+				
+			/********************************************************/
+			// # THE DRAW LOOP
+			/********************************************************/
 
-	/****************************************************************
-	 * Shape 2: green circle
-	 ***************************************************************/
+			/**
+			 * Every time we draw the ball, draw it at a new position 
+			 */
+			var drawBall = function() {
+				ctx.beginPath();
+				ctx.arc(x, y, 20, 0, Math.PI*2, false);
+				ctx.fillStyle = 'blue';
+				ctx.fill();
+				ctx.closePath();		
+			};
 
-		ctx.beginPath();
+			/** 
+			 * Clear the canvas clean so no trail is left from the ball moving aross the canvas
+			 * After drawBall() does its job, increment x and y so the ball has a new position  
+			   every 10 milliseconds
+			 */ 
+			var draw = function() {			
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				drawBall();
+				x += dx;
+				y += dy;
+			};
 
-		// @param 240 and 160: x and y coordinates of the arc's center
-		// @param 20: arc radius
-		// @param 0 and Math.PI*2: start angle and end angle (what angle to start and finish drawing the circle, in radians)
-		// @param false: direction of drawing (false for clockwise, the default, or true for anti-clockwise.) This last parameter is optional.
-		ctx.arc(240, 160, 20, 0, 500, false);
+			/********************************************************/
+			// # ENTER THE DRAW LOOP
+			/********************************************************/
+			setInterval(draw, 10);
+	}());
 
-		ctx.fillStyle = "green";
-		ctx.fill();
-		ctx.closePath();
 
-	/****************************************************************
-	 * Shape 3: transparent rectangel with blue border/stroke
-	 ***************************************************************/
-
-		ctx.beginPath();
-		ctx.rect(160, 10, 100, 40);
-
-		// Defines a blue-stroked empty rectangle. Thanks to the alpha channel in the rgba() function, the blue color is semi transparent.
-		ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-
-		ctx.stroke();
-		ctx.closePath();
 	</script>
 
 </body>
