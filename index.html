@@ -21,59 +21,104 @@
 
 	<script>
 	/**
-	 * Draw a ball that moves across and up the canvas every 10 milliseconds
+	 * Lesson 3
+	 * Change direction and colour of the ball if it hits a wall 
+	 *
+	 * @TODO: add descriptive readme for this lesson
 	 */
 
 		(function() {
 
-			//debugger
 
 			/********************************************************/
 			// # SETUP OUR CANVAS AND PROPERTIES 
 			/********************************************************/
 
-			// Store reference to the canvas element
-			var canvas = document.getElementById("myCanvas");
+				// Store reference to the canvas element
+				var canvas = document.getElementById("myCanvas");
 
-			// Store reference to 2D rendering context 
-			// - the tool we can use for painting to the Canvas
-			var ctx = canvas.getContext("2d");
+				// Store reference to 2D rendering context 
+				// - the tool we can use for painting to the Canvas
+				var ctx = canvas.getContext("2d");
 
-			// Initial ball position: Define the ball postion on the canvas
-			var x = canvas.width/2;
-			var y = canvas.height-30;
+				// Initial ball position: Define the ball postion on the canvas
+				var x = canvas.width/2;
+				var y = canvas.height-30;
 
-			// New ball position: 
-			// Define the amount the ball should move across and up the canvas
-			// NOTE: Changing dxvalues increase
-			var dx = 2;
-			var dy = -2;
+				// New ball position: 
+				// Define the amount the ball should move across and up the canvas
+				// NOTE: Changing dxvalues increase
+				var dx = 2;
+				var dy = -2;
+
+				var ballRadius = 10;
 				
 			/********************************************************/
 			// # THE DRAW LOOP
 			/********************************************************/
 
-			/**
-			 * Every time we draw the ball, draw it at a new position 
-			 */
-			var drawBall = function() {
-				ctx.beginPath();
-				ctx.arc(x, y, 20, 0, Math.PI*2, false);
-				ctx.fillStyle = 'blue';
-				ctx.fill();
-				ctx.closePath();		
-			};
+				/**
+				 * Every time we draw the ball, draw it at a new position 
+				 */
+				var drawBall = function() {
+					ctx.beginPath();
+					ctx.arc(x, y, ballRadius, 0, Math.PI*2, false);				
+					ctx.fill();
+					ctx.closePath();		
+				};
 
-			/** 
-			 * Clear the canvas clean so no trail is left from the ball moving aross the canvas
-			 * After drawBall() does its job, increment x and y so the ball has a new position  
-			   every 10 milliseconds
-			 */ 
-			var draw = function() {			
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				drawBall();
-				x += dx;
-				y += dy;
+				// Generate a random colour
+				var getRandomColor = function() {
+					//debugger
+				    var letters = '0123456789ABCDEF';
+				    var color = '#';
+				    for (var i = 0; i < 6; i++ ) {
+				        color += letters[Math.floor(Math.random() * 16)];
+				    }
+				    return color;
+				};
+
+				/** 
+				 * Clear the canvas clean so no trail is left from the ball moving aross the canvas
+				 * After drawBall() does its job, increment x and y so the ball has a new position  
+				   every 10 milliseconds
+				 */ 
+				var draw = function() {		
+
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					drawBall();
+					x += dx;
+					y += dy;
+
+			/********************************************************/
+			// # COLLISION DETECTION
+			/********************************************************/
+
+				// If the ball is right edge or less than the left edge, 
+				// reverse the movement of the ball
+				if( x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+					dx = -dx;
+
+					// Every time the ball hits a wall, change the ball colour
+					ctx.fillStyle = getRandomColor();
+				}				
+
+				// 0 is the top edge
+				// canvas.height is the bottom edge
+				// If the ball is below the bottom edge, or above the top edge
+				// reverse the movement of the ball
+				if( y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+					dy = -dy;
+
+					// Every time the ball hits a wall, change the ball colour
+					ctx.fillStyle = getRandomColor();
+				}
+
+				//debugger
+				console.log('y is: ');
+				console.log(y);
+				console.log('x is: ');
+				console.log(x);
 			};
 
 			/********************************************************/
