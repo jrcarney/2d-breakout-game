@@ -52,6 +52,15 @@
 				var dy = -2;
 
 				var ballRadius = 10;
+
+				// Initialise the paddle
+				var paddleHeight = 10;
+				var paddleWidth = 75;
+				var paddleX = (canvas.width-paddleWidth)/2;
+
+				// Buttons
+				var rightPressed = false;
+				var leftPressed = false;
 				
 			/********************************************************/
 			// # THE DRAW LOOP
@@ -65,6 +74,18 @@
 					ctx.arc(x, y, ballRadius, 0, Math.PI*2, false);				
 					ctx.fill();
 					ctx.closePath();		
+				};
+
+				/**
+				 * Draw the paddle in a different place on screen based on left
+				 * right cursor presses
+				 */
+				var drawPaddle = function() {
+					ctx.beginPath();
+					ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+					ctx.fillStyle = "#0095DD";
+					ctx.fill();
+					ctx.closePath();
 				};
 
 				// Generate a random colour
@@ -91,41 +112,87 @@
 					x += dx;
 					y += dy;
 
-			/********************************************************/
-			// # COLLISION DETECTION
-			/********************************************************/
+				/********************************************************/
+				// # COLLISION DETECTION
+				/********************************************************/
 
-				// If the ball is right edge or less than the left edge, 
-				// reverse the movement of the ball
-				if( x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-					dx = -dx;
+					// If the ball is right edge or less than the left edge, 
+					// reverse the movement of the ball
+					if( x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+						dx = -dx;
 
-					// Every time the ball hits a wall, change the ball colour
-					ctx.fillStyle = getRandomColor();
-				}				
+						// Every time the ball hits a wall, change the ball colour
+						ctx.fillStyle = getRandomColor();
+					}				
 
-				// 0 is the top edge
-				// canvas.height is the bottom edge
-				// If the ball is below the bottom edge, or above the top edge
-				// reverse the movement of the ball
-				if( y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-					dy = -dy;
+					// 0 is the top edge
+					// canvas.height is the bottom edge
+					// If the ball is below the bottom edge, or above the top edge
+					// reverse the movement of the ball
+					if( y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+						dy = -dy;
 
-					// Every time the ball hits a wall, change the ball colour
-					ctx.fillStyle = getRandomColor();
-				}
+						// Every time the ball hits a wall, change the ball colour
+						ctx.fillStyle = getRandomColor();
+					}
 
-				//debugger
-				console.log('y is: ');
-				console.log(y);
-				console.log('x is: ');
-				console.log(x);
-			};
+					//debugger
+					/*console.log('y is: ');
+					console.log(y);
+					console.log('x is: ');
+					console.log(x);*/
+
+				/// End collision detection
+
+					drawPaddle();
+
+					if(rightPressed && paddleX < canvas.width-paddleWidth) {				
+						//debugger
+						paddleX += 7;
+
+					} else if( leftPressed && paddleX > 0 ) {
+						//debugger
+						paddleX -= 7;
+					}
+
+				};
 
 			/********************************************************/
 			// # ENTER THE DRAW LOOP
 			/********************************************************/
-			setInterval(draw, 10);
+				setInterval(draw, 10);
+			// End enter the draw loop
+
+			/********************************************************/
+			// # EVENTS
+			/********************************************************/
+
+				var keyDownHandler = function(e) {
+					if( e.keyCode == 39 ) {
+						//debugger
+						rightPressed = true;
+
+					} else if( e.keyCode == 37 ) {
+						//debugger
+						leftPressed = true;
+					}
+
+				};
+
+				var keyUpHandler = function(e) {
+					if( e.keyCode == 39 ) {
+						rightPressed = false;
+
+					} else if( e.keyCode == 37 ) {
+						leftPressed = false;
+					}
+
+				};
+
+				document.addEventListener("keydown", keyDownHandler, false);			
+				document.addEventListener("keyup", keyUpHandler, false);			
+
+
 	}());
 
 
