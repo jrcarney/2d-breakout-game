@@ -1,202 +1,275 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8" />
 	<title>MDN: 2d breakout game</title>
 	<style>
 		* {
-			padding: 0; 
+			padding: 0;
 			margin: 0;
 		}
 
 		canvas {
 			background: #eee;
 			display: block;
-			margin: 0 auto;			
+			margin: 0 auto;
 		}
 	</style>
 </head>
+
 <body>
 	<canvas id="myCanvas" width="480" height="320"></canvas>
+	<div id="gameOverContainer">
+		<p id="gameOver"></p>
+		<button id="restartGame"></button>
+	</div>
+
 
 	<script>
-	/**
-	 * Lesson 3
-	 * Change direction and colour of the ball if it hits a wall 
-	 *
-	 * @TODO: add descriptive readme for this lesson
-	 */
+		/**
+		 * Lesson 3
+		 * Change direction and colour of the ball if it hits a wall
+		 *
+		 * @TODO: add descriptive readme for this lesson
+		 */
 
 		(function() {
 
 
 			/********************************************************/
-			// # SETUP OUR CANVAS AND PROPERTIES 
+			// # SETUP OUR CANVAS AND PROPERTIES
 			/********************************************************/
 
-				// Store reference to the canvas element
-				var canvas = document.getElementById("myCanvas");
+			// Store reference to the canvas element
+			var canvas = document.getElementById("myCanvas");
 
-				// Store reference to 2D rendering context 
-				// - the tool we can use for painting to the Canvas
-				var ctx = canvas.getContext("2d");
+			// Store reference to 2D rendering context
+			// - the tool we can use for painting to the Canvas
+			var ctx = canvas.getContext("2d");
 
-				// Initial ball position: Define the ball postion on the canvas
-				var x = canvas.width/2;
-				var y = canvas.height-30;
+			// Initial ball position: Define the ball postion on the canvas
+			var x = canvas.width / 2;
+			var y = canvas.height - 30;
 
-				// New ball position: 
-				// Define the amount the ball should move across and up the canvas
-				// NOTE: Changing dxvalues increase
-				var dx = 2;
-				var dy = -2;
+			// New ball position:
+			// Define the amount the ball should move across and up the canvas
+			// NOTE: Changing dxvalues increase
+			var dx = 2;
+			var dy = -2;
 
-				var ballRadius = 10;
+			var ballRadius = 10;
 
-				// Initialise the paddle
-				var paddleHeight = 10;
-				var paddleWidth = 75;
-				var paddleX = (canvas.width-paddleWidth)/2;
+			// Initialise the paddle
+			var paddleHeight = 10;
+			var paddleWidth = 75;
+			var paddleX = (canvas.width - paddleWidth) / 2;
 
-				// Buttons
-				var rightPressed = false;
-				var leftPressed = false;
-				
+			// Buttons
+			var rightPressed = false;
+			var leftPressed = false;
+
 			/********************************************************/
 			// # THE DRAW LOOP
 			/********************************************************/
 
-				/**
-				 * Every time we draw the ball, draw it at a new position 
-				 */
-				var drawBall = function() {
-					ctx.beginPath();
-					ctx.arc(x, y, ballRadius, 0, Math.PI*2, false);				
-					ctx.fill();
-					ctx.closePath();		
-				};
+			/**
+			 * Every time we draw the ball, draw it at a new position
+			 */
+			var drawBall = function() {
+				ctx.beginPath();
+				ctx.arc(x, y, ballRadius, 0, Math.PI * 2, false);
+				ctx.fill();
+				ctx.closePath();
+			};
 
-				/**
-				 * Draw the paddle in a different place on screen based on left
-				 * right cursor presses
-				 */
-				var drawPaddle = function() {
-					ctx.beginPath();
-					ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-					ctx.fillStyle = "#0095DD";
-					ctx.fill();
-					ctx.closePath();
-				};
+			/**
+			 * Draw the paddle in a different place on screen based on left
+			 * right cursor presses
+			 */
+			var drawPaddle = function() {
+				ctx.beginPath();
+				ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+			};
 
-				// Generate a random colour
-				// see: http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-				var getRandomColor = function() {
-					//debugger
-				    var letters = '0123456789ABCDEF';
-				    var color = '#';
-				    for (var i = 0; i < 6; i++ ) {
-				        color += letters[Math.floor(Math.random() * 16)];
-				    }
-				    return color;
-				};
+			// Generate a random colour
+			// see: http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
+			var getRandomColor = function() {
+				//debugger
+				var letters = '0123456789ABCDEF';
+				var color = '#';
+				for (var i = 0; i < 6; i++) {
+					color += letters[Math.floor(Math.random() * 16)];
+				}
+				return color;
+			};
 
-				/** 
-				 * Clear the canvas clean so no trail is left from the ball moving aross the canvas
-				 * After drawBall() does its job, increment x and y so the ball has a new position  
-				   every 10 milliseconds
-				 */ 
-				var draw = function() {		
+			/**
+			 * Clear the canvas clean so no trail is left from the ball moving aross the canvas
+			 * After drawBall() does its job, increment x and y so the ball has a new position
+			   every 10 milliseconds
+			 */
+			var draw = function() {
 
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					drawBall();
-					x += dx;
-					y += dy;
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				drawBall();
+				x += dx;
+				y += dy;
 
 				/********************************************************/
 				// # COLLISION DETECTION
 				/********************************************************/
 
-					// If the ball is right edge or less than the left edge, 
-					// reverse the movement of the ball
-					if( x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-						dx = -dx;
+				// If the ball is right edge or less than the left edge,
+				// reverse the movement of the ball
+				if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+					moveBallHorizontally();
 
-						// Every time the ball hits a wall, change the ball colour
-						ctx.fillStyle = getRandomColor();
-					}				
+					// Every time the ball hits a wall, change the ball colour
+					ctx.fillStyle = getRandomColor();
+				}
 
-					// 0 is the top edge
-					// canvas.height is the bottom edge
-					// If the ball is below the bottom edge, or above the top edge
-					// reverse the movement of the ball
-					if( y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-						dy = -dy;
+				// 0 is the top edge
+				// canvas.height is the bottom edge
+				// If the ball is above the top edge
+				// reverse the movement of the ball
+				if (y + dy < ballRadius) {
+					moveBallUpward();
 
-						// Every time the ball hits a wall, change the ball colour
-						ctx.fillStyle = getRandomColor();
+					// Every time the ball hits a wall, change the ball colour
+					ctx.fillStyle = getRandomColor();
+
+				} else if (y + dy > canvas.height - ballRadius) {
+					// debugger
+
+					if (x > paddleX && x < paddleX + paddleWidth) {
+						moveBallUpward();
+
+					} else {
+						gameIsOver();
+
 					}
+				}
 
-					//debugger
-					/*console.log('y is: ');
-					console.log(y);
-					console.log('x is: ');
-					console.log(x);*/
+				/**
+				 * The ball hits the paddle: The ball travels upward and the game
+				 * continues...
+				 */
+				function moveBallUpward() {
+					dy = -dy;
+				}
+
+				/**
+				 * The ball hits the paddle: The ball travels upward and the game
+				 * continues...
+				 */
+				function moveBallHorizontally() {
+					dx = -dx;
+				}
+
+				/**
+				 * Game Over: When the ball dissapears below the canvas its Game Over!
+				 */
+				function gameIsOver() {
+
+					// Stop calling the draw() game loop when the ball has dissapeared
+					// below the bottom of the canvas
+					setTimeout(function() {
+						clearInterval(interval);
+					}, 500);
+
+					// Display some Game over text
+					document.querySelector('#gameOver').textContent = "GAME OVER";
+					document.querySelector('#restartGame').textContent = "RESTART GAME";
+
+					// Prevent the player from moving the paddles when its Game Over
+					document.removeEventListener("keydown", keyDownHandler, false);
+					document.removeEventListener("keyup", keyUpHandler, false);
+				}
 
 				/// End collision detection
 
-					drawPaddle();
+				drawPaddle();
 
-					if(rightPressed && paddleX < canvas.width-paddleWidth) {				
-						//debugger
-						paddleX += 7;
+				if (rightPressed && paddleX < canvas.width - paddleWidth) {
+					//debugger
+					paddleX += 7;
 
-					} else if( leftPressed && paddleX > 0 ) {
-						//debugger
-						paddleX -= 7;
-					}
+				} else if (leftPressed && paddleX > 0) {
+					//debugger
+					paddleX -= 7;
+				}
 
-				};
+				/**
+				 * @function logDrawFn
+				 *
+				 * Logging function: used to output the position of the x and y position
+				 * of the ball.
+				 */
+				function logDrawFn() {
+					console.log('y is: ');
+					console.log(y);
+					console.log('x is: ');
+					console.log(x);
+				}
+
+			}
 
 			/********************************************************/
 			// # ENTER THE DRAW LOOP
 			/********************************************************/
-				setInterval(draw, 10);
+			var interval = setInterval(draw, 10);
 			// End enter the draw loop
 
 			/********************************************************/
 			// # EVENTS
 			/********************************************************/
 
-				var keyDownHandler = function(e) {
-					if( e.keyCode == 39 ) {
-						//debugger
-						rightPressed = true;
+			/**
+			 * Handle left and right movement of the paddle
+			 */
+			var keyDownHandler = function(e) {
+				if (e.keyCode == 39) {
+					//debugger
+					rightPressed = true;
 
-					} else if( e.keyCode == 37 ) {
-						//debugger
-						leftPressed = true;
-					}
+				} else if (e.keyCode == 37) {
+					//debugger
+					leftPressed = true;
+				}
 
-				};
+			};
 
-				var keyUpHandler = function(e) {
-					if( e.keyCode == 39 ) {
-						rightPressed = false;
+			var keyUpHandler = function(e) {
+				if (e.keyCode == 39) {
+					rightPressed = false;
 
-					} else if( e.keyCode == 37 ) {
-						leftPressed = false;
-					}
+				} else if (e.keyCode == 37) {
+					leftPressed = false;
+				}
 
-				};
+			};
 
-				document.addEventListener("keydown", keyDownHandler, false);			
-				document.addEventListener("keyup", keyUpHandler, false);			
+			document.addEventListener("keydown", keyDownHandler, false);
+			document.addEventListener("keyup", keyUpHandler, false);
 
+			/**
+			 * Handle restartig of the game
+			 */
+			var restartGame = function(e) {
+				if (e.target.id == 'restartGame') {
+					window.location.reload();
+				}
+			};
 
-	}());
+			document.addEventListener("click", restartGame, false);
 
-
+		}());
 	</script>
 
 </body>
+
 </html>
