@@ -1,52 +1,63 @@
-## Lesson 6: Build the brick field
-> The overall aim of this lesson is to render a few lines of code for the  bricks, using a nested loop that works through a two-dimensional array. First however we need to set up some variables to define information about the bricks such as their width and height,  rows and columns, etc. Add the following lines to your code below the variables which you have previously declared in your program.
+## Lesson 7: Collision detection
+> We have the bricks appearing on the screen already, but the game still isn't that interesting as the ball goes through them. We need to think about adding collision detection so it can bounce off the bricks and break them.
+
+> It's our decision how to implement this, of course, but it can be tough to calculate whether the ball is touching the rectangle or not because there are no helper functions in Canvas for this. For the sake of this tutorial we will do it the easiest way possible. We will check if the center of the ball is colliding with any of the given bricks. This won't give a perfect result every time, and there are much more sophisticated ways to do collision detection, but this will work fine for teaching you the basic concepts.
 
 In this step we:
-- Drew a grid of bricks to the canvas
+- Enabled bricks to be destroyed when they are hit by the ball
 
 ```javascript
-/* @JC 11/1/18: building some bricks */
-// Bricks: Initialise the amount and shape and padding
-var brickRowCount = 3;
-var brickColumnCount = 5;
-var brickWidth = 75;
-var brickHeight = 20;
-var brickPadding = 10;
-var brickOffsetTop = 30;
-var brickOffsetLeft = 30;
-
-// Bricks - 2D array: Each bricks array element Contains an object
-// containing the x and y position to paint each brick on the screen.
 var bricks = [];
 for (c = 0; c < brickColumnCount; c++) {
   bricks[c] = [];
   for (r = 0; r < brickRowCount; r++) {
     bricks[c][r] = {
       x: 0,
-      y: 0
+      y: 0,
+      status: 1
     };
   }
+}
+
+function drawBricks() {
+    for(c=0; c<brickColumnCount; c++) {
+        for(r=0; r<brickRowCount; r++) {
+            if(bricks[c][r].status == 1) {
+                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
 }
 ```
 
 ```javascript
 /**
- * @function drawBricks
+ * @function collisionDetection
  *
- * - Paints columns and rows of bricks to the canvas.
+ * - Sets the status of a brick to zero if the ball hits it.
  */
-var drawBricks = function() {
+var collisionDetection = function() {
   for (c = 0; c < brickColumnCount; c++) {
     for (r = 0; r < brickRowCount; r++) {
-      var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-      var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
-      bricks[c][r].x = brickX;
-      bricks[c][r].y = brickY;
-      ctx.beginPath();
-      ctx.rect(brickX, brickY, brickWidth, brickHeight);
-      ctx.fillStyle = "#0095DD";
-      ctx.fill();
-      ctx.closePath();
+      var b = bricks[c][r];
+
+      // Check for bricks that still exist
+      if (b.status == 1) {
+        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+          dy = -dy;
+
+          // Will force the destroyed brick to no longer render
+          b.status = 0;
+        }
+      }
     }
   }
 }
