@@ -28,14 +28,13 @@
 
 	<script>
 		/**
-		 * Lesson 3
-		 * Change direction and colour of the ball if it hits a wall
+		 * Lesson 6
+		 * Build the brick field
 		 *
 		 * @TODO: add descriptive readme for this lesson
 		 */
 
 		(function() {
-
 
 			/********************************************************/
 			// # SETUP OUR CANVAS AND PROPERTIES
@@ -69,6 +68,29 @@
 			var rightPressed = false;
 			var leftPressed = false;
 
+			/* @JC 11/1/18: building some bricks */
+			// Bricks: Initialise the amount and shape and padding
+			var brickRowCount = 3;
+			var brickColumnCount = 5;
+			var brickWidth = 75;
+			var brickHeight = 20;
+			var brickPadding = 10;
+			var brickOffsetTop = 30;
+			var brickOffsetLeft = 30;
+
+			// Bricks - 2D array: Each bricks array element Contains an object
+			// containing the x and y position to paint each brick on the screen.
+			var bricks = [];
+			for (c = 0; c < brickColumnCount; c++) {
+				bricks[c] = [];
+				for (r = 0; r < brickRowCount; r++) {
+					bricks[c][r] = {
+						x: 0,
+						y: 0
+					};
+				}
+			}
+
 			/********************************************************/
 			// # THE DRAW LOOP
 			/********************************************************/
@@ -98,7 +120,6 @@
 			// Generate a random colour
 			// see: http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
 			var getRandomColor = function() {
-				//debugger
 				var letters = '0123456789ABCDEF';
 				var color = '#';
 				for (var i = 0; i < 6; i++) {
@@ -108,14 +129,42 @@
 			};
 
 			/**
-			 * Clear the canvas clean so no trail is left from the ball moving aross the canvas
-			 * After drawBall() does its job, increment x and y so the ball has a new position
-			   every 10 milliseconds
+			 * @function drawBricks
+			 *
+			 * - Paints columns and rows of bricks to the canvas.
+			 */
+			var drawBricks = function() {
+				for (c = 0; c < brickColumnCount; c++) {
+					for (r = 0; r < brickRowCount; r++) {
+						var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+						var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+						bricks[c][r].x = brickX;
+						bricks[c][r].y = brickY;
+						ctx.beginPath();
+						ctx.rect(brickX, brickY, brickWidth, brickHeight);
+						ctx.fillStyle = "#0095DD";
+						ctx.fill();
+						ctx.closePath();
+					}
+				}
+			}
+
+			/**
+			 * @function draw
+			 *
+			 * - Every 10 milliseconds, clear the canvas, re-draw the bricks and ball.
+			 * - The ball is redrawn in a new postion.
+			 * - The paddle is redrawn in a new position based on left right button presses
+			 * - Allows the ball to dissapear below the canvas, ending the game.
 			 */
 			var draw = function() {
 
+				// Clear the canvas and re-draw everything
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				drawBricks();
 				drawBall();
+				drawPaddle();
+
 				x += dx;
 				y += dy;
 
@@ -132,10 +181,8 @@
 					ctx.fillStyle = getRandomColor();
 				}
 
-				// 0 is the top edge
-				// canvas.height is the bottom edge
-				// If the ball is above the top edge
-				// reverse the movement of the ball
+				// 0 is the top edge canvas.height is the bottom edge
+				// If the ball is above the top edge reverse the movement of the ball
 				if (y + dy < ballRadius) {
 					moveBallUpward();
 
@@ -143,7 +190,6 @@
 					ctx.fillStyle = getRandomColor();
 
 				} else if (y + dy > canvas.height - ballRadius) {
-					// debugger
 
 					if (x > paddleX && x < paddleX + paddleWidth) {
 						moveBallUpward();
@@ -192,15 +238,16 @@
 
 				/// End collision detection
 
-				drawPaddle();
-
+				/**
+				 * Move the paddle on the left or right side of the canvas based
+				 * on whether the left or right buttons were pressed.
+				 */
 				if (rightPressed && paddleX < canvas.width - paddleWidth) {
-					//debugger
 					paddleX += 7;
 
 				} else if (leftPressed && paddleX > 0) {
-					//debugger
 					paddleX -= 7;
+
 				}
 
 				/**
