@@ -23,6 +23,10 @@
 	<div id="gameOverContainer">
 		<p id="gameOver"></p>
 		<button id="restartGame"></button>
+		<div id="scoreContainer">
+			<p id="scoreText">Score: </p>
+			<p id="score">0</p>
+		</div>
 	</div>
 
 	<script>
@@ -83,6 +87,10 @@
 					};
 				}
 			}
+
+			var score = 0;
+			var bricksDestroyedCount = 0;
+			var gameWon = false;
 
 			/********************************************************/
 			// # THE DRAW LOOP
@@ -162,11 +170,86 @@
 
 								// Will force the destroyed brick to no longer render
 								b.status = 0;
+								bricksDestroyedCount++;
+								drawScore();
+								isGameComplete();
 							}
 						}
 					}
 				}
 			}
+
+			/**
+			 * @function isGameComplete
+			 *
+			 * - If all the blocks are destroyed, the player has won the game!
+			 */
+			var isGameComplete = function() {
+				if(bricksDestroyedCount == 15) {
+					gameWon = true;
+					gameIsOver();
+				}
+			};
+
+			/**
+			 * @function drawScore
+			 *
+			 * Update the score every time a block has been destroyed
+			 */
+			 var drawScore = function() {
+				 document.querySelector('#score').textContent = score += 10;
+			 };
+
+ 			/**
+			 * @function moveBallUpward
+			 *
+ 			 * The ball hits the paddle: The ball travels upward and the game
+ 			 * continues...
+ 			 */
+ 			var moveBallUpward = function(dy) {
+ 				dy = -dy;
+ 				return dy;
+ 			};
+
+			/**
+			 * @function moveBallHorizontally
+			 *
+			 * The ball hits the paddle: The ball travels upward and the game
+			 * continues...
+			 */
+			var moveBallHorizontally = function(dx) {
+				dx = -dx;
+				return dx;
+			};
+
+			/**
+			 * @function gameIsOver
+			 *
+			 * Stop the draw loop and display a 'you won' or 'game over message'
+			 */
+			var gameIsOver = function() {
+
+				// Stop calling the draw() game loop when the ball has dissapeared
+				// below the bottom of the canvas
+				setTimeout(function() {
+					clearInterval(interval);
+				}, 500);
+
+				// Display some Game over text
+				if(gameWon) {
+					document.querySelector('#gameOver').textContent = "YOU WIN!!";
+
+				} else {
+					document.querySelector('#gameOver').textContent = "GAME OVER";
+
+				}
+
+				document.querySelector('#restartGame').textContent = "RESTART GAME";
+
+				// Prevent the player from moving the paddles when its Game Over
+				document.removeEventListener("keydown", keyDownHandler, false);
+				document.removeEventListener("keyup", keyUpHandler, false);
+			};
 
 			/**
 			 * @function draw
@@ -195,7 +278,7 @@
 				// If the ball is right edge or less than the left edge,
 				// reverse the movement of the ball
 				if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-					moveBallHorizontally();
+					dx = moveBallHorizontally(dx);
 
 					// Every time the ball hits a wall, change the ball colour
 					ctx.fillStyle = getRandomColor();
@@ -204,7 +287,7 @@
 				// 0 is the top edge canvas.height is the bottom edge
 				// If the ball is above the top edge reverse the movement of the ball
 				if (y + dy < ballRadius) {
-					moveBallUpward();
+					dy = moveBallUpward(dy);
 
 					// Every time the ball hits a wall, change the ball colour
 					ctx.fillStyle = getRandomColor();
@@ -212,50 +295,13 @@
 				} else if (y + dy > canvas.height - ballRadius) {
 
 					if (x > paddleX && x < paddleX + paddleWidth) {
-						moveBallUpward();
+						dy = moveBallUpward(dy);
 
 					} else {
 						gameIsOver();
 
 					}
 				}
-
-				/**
-				 * The ball hits the paddle: The ball travels upward and the game
-				 * continues...
-				 */
-				function moveBallUpward() {
-					dy = -dy;
-				}
-
-				/**
-				 * The ball hits the paddle: The ball travels upward and the game
-				 * continues...
-				 */
-				function moveBallHorizontally() {
-					dx = -dx;
-				}
-
-				/**
-				 * Game Over: When the ball dissapears below the canvas its Game Over!
-				 */
-				function gameIsOver() {
-
-					// Stop calling the draw() game loop when the ball has dissapeared
-					// below the bottom of the canvas
-					setTimeout(function() {
-						clearInterval(interval);
-					}, 500);
-
-					// Display some Game over text
-					document.querySelector('#gameOver').textContent = "GAME OVER";
-					document.querySelector('#restartGame').textContent = "RESTART GAME";
-
-					// Prevent the player from moving the paddles when its Game Over
-					document.removeEventListener("keydown", keyDownHandler, false);
-					document.removeEventListener("keyup", keyUpHandler, false);
-				}
-
 				/// End collision detection
 
 				/**
@@ -307,7 +353,6 @@
 					//debugger
 					leftPressed = true;
 				}
-
 			};
 
 			var keyUpHandler = function(e) {

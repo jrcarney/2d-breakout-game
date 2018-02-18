@@ -1,64 +1,92 @@
-## Lesson 7: Collision detection
-> We have the bricks appearing on the screen already, but the game still isn't that interesting as the ball goes through them. We need to think about adding collision detection so it can bounce off the bricks and break them.
-
-> It's our decision how to implement this, of course, but it can be tough to calculate whether the ball is touching the rectangle or not because there are no helper functions in Canvas for this. For the sake of this tutorial we will do it the easiest way possible. We will check if the center of the ball is colliding with any of the given bricks. This won't give a perfect result every time, and there are much more sophisticated ways to do collision detection, but this will work fine for teaching you the basic concepts.
+## Lesson 8: Track the score and win
+> Destroying the bricks is really cool, but to be even more awesome the game could award points for every brick a user hits, and keep count of the total score.
 
 In this step we:
-- Enabled bricks to be destroyed when they are hit by the ball
+- Added `drawScore()`: This updates the score when a brick is destroyed
+- Added `isGameComplete()`: This detects if all bricks are destroyed and ends the game
 
 ```javascript
-var bricks = [];
-for (c = 0; c < brickColumnCount; c++) {
-  bricks[c] = [];
-  for (r = 0; r < brickRowCount; r++) {
-    bricks[c][r] = {
-      x: 0,
-      y: 0,
-      status: 1
-    };
+/**
+ * @function isGameComplete
+ *
+ * - If all the blocks are destroyed, the player has won the game!
+ */
+var isGameComplete = function() {
+  if(bricksDestroyedCount == 15) {
+    gameWon = true;
+    gameIsOver();
   }
-}
+};
 
-function drawBricks() {
-    for(c=0; c<brickColumnCount; c++) {
-        for(r=0; r<brickRowCount; r++) {
-            if(bricks[c][r].status == 1) {
-                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-    }
-}
 ```
 
 ```javascript
 /**
- * @function collisionDetection
+ * @function drawScore
  *
- * - Sets the status of a brick to zero if the ball hits it.
+ * Update the score every time a block has been destroyed
  */
-var collisionDetection = function() {
-  for (c = 0; c < brickColumnCount; c++) {
-    for (r = 0; r < brickRowCount; r++) {
-      var b = bricks[c][r];
+ var drawScore = function() {
+   document.querySelector('#score').textContent = score += 10;
+ };
+```
 
-      // Check for bricks that still exist
-      if (b.status == 1) {
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-          dy = -dy;
+Refactored:
+- Moved `moveBallUpward()`, `moveBallHorizontally()` and `gameIsOver()` out of the `draw()` function
+  so to 'farm' the logic out of draw and into their own functions
+- Moving gameIsOver() out of draw(), enabled me to reuse the logic from gameIsOver(), therefore
+  keeping the code more DRY
 
-          // Will force the destroyed brick to no longer render
-          b.status = 0;
-        }
-      }
-    }
-  }
-}
+
+```javascript
+/**
+ * @function moveBallUpward
+ *
+ * The ball hits the paddle: The ball travels upward and the game
+ * continues...
+ */
+var moveBallUpward = function(dy) {
+  dy = -dy;
+  return dy;
+};
+
+/**
+ * @function moveBallHorizontally
+ *
+ * The ball hits the paddle: The ball travels upward and the game
+ * continues...
+ */
+var moveBallHorizontally = function(dx) {
+  dx = -dx;
+  return dx;
+};
+
+/**
+ * @function gameIsOver
+ *
+ * Stop the draw loop and display a 'you won' or 'game over message'
+ */
+var gameIsOver = function() {
+
+	// Stop calling the draw() game loop when the ball has dissapeared
+	// below the bottom of the canvas
+	setTimeout(function() {
+		clearInterval(interval);
+	}, 500);
+
+	// Display some Game over text
+	if(gameWon) {
+		document.querySelector('#gameOver').textContent = "YOU WIN!!";
+
+	} else {
+		document.querySelector('#gameOver').textContent = "GAME OVER";
+
+	}
+
+	document.querySelector('#restartGame').textContent = "RESTART GAME";
+
+	// Prevent the player from moving the paddles when its Game Over
+	document.removeEventListener("keydown", keyDownHandler, false);
+	document.removeEventListener("keyup", keyUpHandler, false);
+};
 ```
