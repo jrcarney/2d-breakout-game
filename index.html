@@ -346,12 +346,20 @@
 					console.log(x);
 				}
 
+				// Framerate controlled by the host environment
+				requestAnimationFrame(draw);
 			}
 
 			/********************************************************/
 			// # ENTER THE DRAW LOOP
 			/********************************************************/
-			var interval = setInterval(draw, 10);
+			
+			// Commented out to use requestAnimationFrame()
+			// var interval = setInterval(draw, 10);
+			
+			// Calls draw which runs requestAnimationFrame(draw);
+			draw();
+
 			// End enter the draw loop
 
 			/********************************************************/
