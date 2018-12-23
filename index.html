@@ -3,24 +3,38 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>MDN: 2d breakout game</title>
+	<title>Christmas Breakout</title>
 	<style>
+		
+		html {
+			background-image: url(snowman.jpg);
+			background-size: cover;
+			width: 100%;
+			height: 100%;
+			background-repeat: no-repeat;
+		}
+
 		* {
 			padding: 0;
 			margin: 0;
 		}
 
-		canvas {
+		#myCanvas {
 			background: #eee;
+
+			background-image: url("snowman.jpg");
+			background-size: 550px; 
+			
 			display: block;
 			margin: 0 auto;
 		}
 	</style>
 </head>
 
-<body>
+<body style="height: 100%">
+	
 	<canvas id="myCanvas" width="480" height="320"></canvas>
-	<div id="gameOverContainer">
+	<div id="gameOverContainer" style="position: absolute; bottom: 0;">
 		<p id="gameOver"></p>
 		<button id="restartGame"></button>
 		<div id="scoreContainer">
@@ -28,6 +42,9 @@
 			<p id="score">0</p>
 		</div>
 	</div>
+	<div class="snowContainer" style="width: 100%; height: 80%;"></div>
+
+	<script src="snowfall.js"></script>
 
 	<script>
 		(function() {
@@ -145,7 +162,7 @@
 							bricks[c][r].y = brickY;
 							ctx.beginPath();
 							ctx.rect(brickX, brickY, brickWidth, brickHeight);
-							ctx.fillStyle = "#0095DD";
+							ctx.fillStyle = "darkred";
 							ctx.fill();
 							ctx.closePath();
 						}
