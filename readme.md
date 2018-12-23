@@ -1,9 +1,2 @@
-## Lesson 9: 
-> ...todo
-In this step we:
-...todo
-
-```javascript
-
-```
-
+## Christmas Breakout
+The classic Breakout game with a Christmas theme.
