@@ -3,71 +3,10 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>Christmas Breakout</title>
+	<title>Christmas Breakout</title>	
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<style>	
-
-
-		html {
-			background-image: url(snowman.jpg);
-			background-size: cover;
-			width: 100%;
-			height: 100%;
-			background-repeat: no-repeat;
-			font-family: cursive;
-		}
-
-		* {
-			padding: 0;
-			margin: 0;
-		}
-
-		#myCanvas {
-			background: #eee;
-
-			background-image: url("snowman.jpg");
-			background-size: 1100px; 
-			
-			display: block;
-			margin: 0 auto;
-		}
-
-		#nextLevel {
-			display: none;
-		}
-
-		.snowContainer {
-			width: 100%;
-			height: 100%;
-			position: absolute;
-			top: 0;
-			z-index: -999;
-		}
-
-		#gameOver {
-			text-align:center;
-			font-size: 30px;
-			background: #edecea;
-			width: 900px;
-			margin: 0 auto;
-		}
-
-		#gameOverContainer {
-		    /* position: absolute; */
-			/* bottom: 0; */
-			z-index: 999;
-			display: grid;
-			grid-template-columns: 1fr 1fr 1fr;
-			justify-items: center;
-			width: 900px;
-			margin: 0 auto;
-			background: #edecea;
-		}
-
-		#score,
-		#highestScore,
-		#currentLevel {
-			font-weight: bold;
-		}
+	
 	</style>
 
 </head>
@@ -94,9 +33,9 @@
 		</div>			
 
 		<div id="gameStats" class="">
-			<button id="restartLevel">Restart level</button>
-			<button id="nextLevel"></button>
-			<button id="newGame">Reset to level one</button>
+			<button id="restartLevel" class="btn">Restart level</button>
+			<button id="nextLevel" class="btn"></button>
+			<button id="newGame" class="btn">Reset to level one</button>
 		</div>
 
 	
