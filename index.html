@@ -36,7 +36,7 @@
 	<canvas id="myCanvas" width="480" height="320"></canvas>
 	<div id="gameOverContainer" style="position: absolute; bottom: 0;">
 		<p id="gameOver"></p>
-		<button id="restartGame"></button>
+		<button id="restartLevel"></button>
 		<button id="nextLevel"></button>
 		<div id="scoreContainer">
 			<p id="scoreText">Current Score: </p>
@@ -44,7 +44,7 @@
 		</div>
 		<p id="highestScoreText">Highest score recorded:</p>
 		<p id="highestScore"></p>
-		<button id="newGame">Start new game</button>
+		<button id="newGame">Reset to level one</button>
 	</div>
 	<div class="snowContainer" style="width: 100%; height: 80%;"></div>
 
@@ -308,7 +308,7 @@
 
 				// Display some Game over text
 				if(gameWon) {
-					document.querySelector('#gameOver').textContent = "Level one complete";
+					document.querySelector('#gameOver').textContent = "Level complete";
 					
 					// @JC 23/12/18: Display the next level button
 					document.querySelector('#nextLevel').textContent = "Go to next level";
@@ -327,9 +327,9 @@
 
 					// @JC 23/12/18: commented out so to use the level up system
 					// Display restart game button
-					document.querySelector('#restartGame').textContent = "RESTART GAME";
+					document.querySelector('#restartLevel').textContent = "Restart level";
 					localStorage.setItem("score", 0);	
-					localStorage.setItem("level", 1);	
+					//localStorage.setItem("level", 1);	
 				}
 
 				// Prevent the player from moving the paddles when its Game Over
@@ -510,13 +510,13 @@
 			/**
 			 * Handle restartig of the game
 			 */
-			var restartGame = function(e) {
-				if (e.target.id == 'restartGame') {
+			var restartLevel = function(e) {
+				if (e.target.id == 'restartLevel') {
 					window.location.reload();
 				}
 			};
 
-			document.addEventListener("click", restartGame, false);
+			document.addEventListener("click", restartLevel, false);
 
 			/**
 			 * @JC 23/12/18: increases the difficulty of the game for each level.
@@ -550,6 +550,7 @@
 				if(e.target.id == 'newGame') {
 					localStorage.setItem("dx", 3);
 					localStorage.setItem("dy", -3);
+					localStorage.setItem("level",1);
 				}
 				
 			};
