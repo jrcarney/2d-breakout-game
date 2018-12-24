@@ -7,7 +7,7 @@
 			/********************************************************/
 
 			// Store reference to the canvas element
-			var canvas = document.getElementById("myCanvas");
+			var canvas = document.getElementById("gameCanvas");
 
 			// Store reference to 2D rendering context
 			// - the tool we can use for painting to the Canvas
@@ -15,9 +15,8 @@
 
 			// Initial ball position: Define the ball postion on the canvas
 			var x = canvas.width / 2;
-			var y = canvas.height - 30;
-
-			// @JC 23/12/18: 
+            var y = canvas.height - 30;
+            
 			// New ball position: Increases the amount of dx and dy increases the speed of the ball
 			if(localStorage.getItem("dx") ) {
 				var dx = parseInt( localStorage.getItem("dx") );
@@ -42,7 +41,6 @@
 			var rightPressed = false;
 			var leftPressed = false;
 
-			/* @JC 11/1/18: building some bricks */
 			// Bricks: Initialise the amount and shape and padding
 			var brickRowCount = 3;
 			var brickColumnCount = 10;
@@ -65,38 +63,35 @@
 					};
 				}
 			}
-
 			
 			if( localStorage.getItem("score") ) {
 				var score = parseInt( localStorage.getItem("score") );
-			}
-			else {
+			} else {
 				var score = 0;
 			}
 			var bricksDestroyedCount = 0;
 			var gameWon = false;
 
-			// @23/18/12: Utimately used for stopping the game loop.
-			// declaration used for storing the return value of requestAnimationFrame().
+            // Utimately used for stopping the game loop.declaration used for storing 
+            // the return value of requestAnimationFrame().
 			var frames;
 
-			// @23/18/12: declaration used for stopping the animationFrames
+			// Declaration used for stopping the animationFrames
 			var stop;
 			
-			// @23/18/12: declaration used for storing the level the player is on.
+			// Declaration used for storing the level the player is on.
 			if(localStorage.getItem("level") ) {
 				var levelNumber = localStorage.getItem("level");
 			} else {
 				var levelNumber = 1;
 			}
 
-			// Load the background music
+			// Load the audio file
 			var jingle = new Audio('jingle.mp3');
-			var brickDestroyed = new Audio('handbell.mp3');
 
 			// ############################################################ //
 			// @tag: testMode / test mode
-			// @JC 23/12/18: set this to true to enter test game mode. only use for testing!!
+			// Set this to true to enter test game mode. only use for testing!!
 			// when not testing, set to false
 			var overrideCount = false;
 			// ############################################################ //
@@ -129,17 +124,6 @@
 				ctx.fillStyle = "darkred";
 				ctx.fill();
 				ctx.closePath();
-			};
-
-			// Generate a random colour
-			// see: http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-			var getRandomColor = function() {
-				var letters = '0123456789ABCDEF';
-				var color = '#';
-				for (var i = 0; i < 6; i++) {
-					color += letters[Math.floor(Math.random() * 16)];
-				}
-				return color;
 			};
 
 			/**
@@ -188,7 +172,9 @@
 								//  play brick destroyed sound											
 								var promise = brickDestroyed.play();
 								if (promise !== undefined) {
-									promise.then(_ => {								
+									promise.then(_ => {		
+                                        // Create file on the fly to avoid timing issues
+                                    var brickDestroyed = new Audio('handbell.mp3');						
 									brickDestroyed.play();
 								}).catch(error => {});
 								}							
@@ -228,7 +214,6 @@
 			 */
 			 var drawScore = function() {				 
 				score = score +10;
-
 				localStorage.setItem("score", score);
 				document.querySelector('#score').textContent = score;
 			 };
@@ -261,23 +246,17 @@
 			 * Stop the draw loop and display a 'you won' or 'game over message'
 			 */
 			var gameIsOver = function() {
-				// @JC 23/12/18: no longer used as requestAnimatinoFrame() is used.
-				// Stop calling the draw() game loop when the ball has dissapeared below the bottom of the canvas
-				// setTimeout(function() {
-				// 	clearInterval(interval);
-				// }, 500);
-
 				scoreCounter();
 
-				// Display some Game over text
+				// Display Game over text
 				if(gameWon) {
 					document.querySelector('#gameOver').textContent = "Level complete";
 					
-					// @JC 23/12/18: Display the next level button
+					// Display the next level button
 					document.querySelector('#nextLevel').style.display = "block";
 					document.querySelector('#nextLevel').textContent = "Go to next level";
 
-					// @JC 23/12/18: might need to remove
+					// Stop the game loop
 					stop = true;
 					stopDrawing(stop);
 
@@ -285,15 +264,13 @@
 					
 					document.querySelector('#gameOver').textContent = "GAME OVER";
 					
-					// @JC 23/12/18: might need to remove
+					// Stop the game loop
 					stop = true;
 					stopDrawing(stop);
-
-					// @JC 23/12/18: commented out so to use the level up system
+					
 					// Display restart game button
 					document.querySelector('#restartLevel').textContent = "Restart level";
-					localStorage.setItem("score", 0);	
-					//localStorage.setItem("level", 1);	
+					localStorage.setItem("score", 0);						
 				}
 
 				// Prevent the player from moving the paddles when its Game Over
@@ -301,7 +278,7 @@
 				document.removeEventListener("keyup", keyUpHandler, false);							
 			};
 
-			// 23/12/18: set the high score
+			// Set the high score
 			var scoreCounter = function() {
 				if(localStorage.getItem("highScore")){							
 					document.querySelector('#highestScore').textContent = localStorage.getItem("highScore");
@@ -319,7 +296,7 @@
 			/**
 			 * @function draw
 			 *
-			 * - Every 10 milliseconds, clear the canvas, re-draw the bricks and ball.
+			 * - Clear the canvas, re-draw the bricks and ball.
 			 * - The ball is redrawn in a new postion.
 			 * - The paddle is redrawn in a new position based on left right button presses
 			 * - Allows the ball to dissapear below the canvas, ending the game.
@@ -343,18 +320,12 @@
 				// reverse the movement of the ball
 				if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
 					dx = moveBallHorizontally(dx);
-
-					// Every time the ball hits a wall, change the ball colour
-					ctx.fillStyle = getRandomColor();
 				}
 
 				// 0 is the top edge canvas.height is the bottom edge
 				// If the ball is above the top edge reverse the movement of the ball
 				if (y + dy < ballRadius) {
 					dy = moveBallUpward(dy);
-
-					// Every time the ball hits a wall, change the ball colour
-					ctx.fillStyle = getRandomColor();
 
 				} else if (y + dy > canvas.height - ballRadius) {
 
@@ -381,10 +352,8 @@
 				}
 
 				// Update the score and high score
-				scoreCounter();
-
-				// 
-
+                scoreCounter();
+                
 				/**
 				 * @function logDrawFn
 				 *
@@ -398,56 +367,46 @@
 					console.log(x);
 				}			
 
-				// @JC 23/12/18: 
+				// Continue running the game if no stop condition is established.
 				if(!stop) {
 					animationFn();
 				}
 			}
 
-			// @JC 23/12/18: Framerate controlled by the host environment
+			// Framerate controlled by the host environment
 			var animationFn = function() {
 				frames = requestAnimationFrame(draw);	
 			};
 			
 
-			// @JC 23/12/18: stop the game loop / animation.
+			// Stop the game loop / animation.
 			var stopDrawing = function(stop) {
 				if(stop) {
 					cancelAnimationFrame(frames);
-					// frames = undefined;
 				}
 			};
 
-			// @JC 24/12/18: dispaly the level number in the UI
-			var levelNumberUi = function() {
-				
+			// Dispaly the level number in the UI
+			var levelNumberUi = function() {				
 				if(localStorage.getItem('level')) {
 					document.querySelector('#currentLevel').textContent = localStorage.getItem('level');
 				} else {
 					document.querySelector('#currentLevel').textContent = 1
-				}
-				
+				}				
 			};
 
 			/********************************************************/
 			// # ENTER THE DRAW LOOP
 			/********************************************************/
 			
-			// Commented out to use requestAnimationFrame()
-			// var interval = setInterval(draw, 10);
-			
 			// Calls draw which runs requestAnimationFrame(draw);
 			draw();
-			// End enter the draw loop
 
 			// Draw the level UI
 			levelNumberUi();
 
 			// Play background music after its been loaded
 			setInterval(function() {
-                // jingle.play();	
-                // jingle.loop = true;                	
-                
                 var jinglepromise = jingle.play();
                 if (jinglepromise !== undefined) {
                     jinglepromise.then(_ => {								
@@ -455,7 +414,6 @@
                         jingle.loop = true;
                 }).catch(error => {});
                 }	                
-
 			}, 1000);			
 
 			/********************************************************/
@@ -466,53 +424,44 @@
 			 * Handle left and right movement of the paddle
 			 */
 			var keyDownHandler = function(e) {
-				if (e.keyCode == 39) {
-		
+				if (e.keyCode == 39) {		
 					rightPressed = true;
-
-				} else if (e.keyCode == 37) {
-				
+				} else if (e.keyCode == 37) {				
 					leftPressed = true;
 				}
 			};
+			document.addEventListener("keydown", keyDownHandler, false);
 
 			var keyUpHandler = function(e) {
 				if (e.keyCode == 39) {
 					rightPressed = false;
-
 				} else if (e.keyCode == 37) {
 					leftPressed = false;
 				}
-
 			};
-
-			document.addEventListener("keydown", keyDownHandler, false);
 			document.addEventListener("keyup", keyUpHandler, false);
 
 			/**
-			 * Handle restartig of the game
+			 * Handle restarting of the game
 			 */
 			var restartLevel = function(e) {
 				if (e.target.id == 'restartLevel') {
 					window.location.reload();
 				}
 			};
-
 			document.addEventListener("click", restartLevel, false);
 
 			/**
-			 * @JC 23/12/18: increases the difficulty of the game for each level.
+			 * Increases the difficulty of the game for each level.
 			 */
 			var nextLevel = function(e) {
-				if(e.target.id == 'nextLevel') {
-					
+				if(e.target.id == 'nextLevel') {					
 					function getRandomIntInclusive(min, max) {
 						var	min = Math.ceil(min);
 						var	max = Math.floor(max);
 						return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 					}
 
-					// @JC 23/12/18: 
 					levelNumber++;
 					localStorage.setItem("level", levelNumber);
 					
@@ -541,19 +490,13 @@
 							localStorage.setItem("dx", getRandomIntInclusive(8, 9));	
 							localStorage.setItem("dy", getRandomIntInclusive(10, 11));		
 							break;
-					}
-
-					//localStorage.setItem("dx", getRandomIntInclusive(3, 6));
-					//localStorage.setItem("dy", getRandomIntInclusive(7, 14));
-
-					//localStorage.setItem("score", score);
-					
+					}					
 					window.location.reload();
 				}
 			};
 			document.addEventListener("click", nextLevel, false);	
 			
-			// 23/12/18: reset game to level one
+			// Reset game to level one
 			var newGame = function(e) {
 				if(e.target.id == 'newGame') {
 					localStorage.setItem("dx", 3);
