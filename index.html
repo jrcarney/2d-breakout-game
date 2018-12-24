@@ -51,7 +51,7 @@
 
 <body style="height: 100%">
 	
-	<canvas id="myCanvas" width="480" height="320"></canvas>
+	<canvas id="myCanvas" width="900" height="620"></canvas>
 	<div id="gameOverContainer" style="position: absolute; bottom: 0;">
 		<h2 id="gameOver"></h2>
 		<button id="restartLevel">Restart level</button>
@@ -110,7 +110,7 @@
 
 			// Initialise the paddle
 			var paddleHeight = 10;
-			var paddleWidth = 75;
+			var paddleWidth = 175;
 			var paddleX = (canvas.width - paddleWidth) / 2;
 
 			// Buttons
@@ -120,7 +120,7 @@
 			/* @JC 11/1/18: building some bricks */
 			// Bricks: Initialise the amount and shape and padding
 			var brickRowCount = 3;
-			var brickColumnCount = 5;
+			var brickColumnCount = 10;
 			var brickWidth = 75;
 			var brickHeight = 20;
 			var brickPadding = 10;
@@ -266,13 +266,13 @@
 			 */
 			var isGameComplete = function() {
 				if(overrideCount == true) {
-					if(bricksDestroyedCount == 1) {
+					if(bricksDestroyedCount == 4) {
 						gameWon = true;
 						gameIsOver();						
 					}	
 
 				} else {				
-					if(bricksDestroyedCount == 15) {
+					if(bricksDestroyedCount == 30) {
 						gameWon = true;
 						gameIsOver();
 					}	
@@ -571,8 +571,35 @@
 					levelNumber++;
 					localStorage.setItem("level", levelNumber);
 					
-					localStorage.setItem("dx", getRandomIntInclusive(1, 3)+1);
-					localStorage.setItem("dy", getRandomIntInclusive(5, 7)+1);
+					switch(levelNumber) {
+						case 1:
+						case 2:
+						case 3:
+							localStorage.setItem("dx", getRandomIntInclusive(1, 3));	
+							localStorage.setItem("dy", getRandomIntInclusive(4, 7));		
+							break;
+						case 4:
+						case 5:
+						case 6:
+							localStorage.setItem("dx", getRandomIntInclusive(3, 6));	
+							localStorage.setItem("dy", getRandomIntInclusive(7, 10));		
+							break;
+						case 7:
+						case 8:
+						case 9:
+							localStorage.setItem("dx", getRandomIntInclusive(6, 9));	
+							localStorage.setItem("dy", getRandomIntInclusive(10, 13));		
+							break;
+						case 10:
+						case 11:
+						case 12:
+							localStorage.setItem("dx", getRandomIntInclusive(8, 9));	
+							localStorage.setItem("dy", getRandomIntInclusive(10, 11));		
+							break;
+					}
+
+					//localStorage.setItem("dx", getRandomIntInclusive(3, 6));
+					//localStorage.setItem("dy", getRandomIntInclusive(7, 14));
 
 					//localStorage.setItem("score", score);
 					
