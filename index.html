@@ -53,6 +53,8 @@
 	<script>
 		(function() {
 
+			// debugger
+
 			/********************************************************/
 			// # SETUP OUR CANVAS AND PROPERTIES
 			/********************************************************/
@@ -119,7 +121,7 @@
 			}
 
 			
-			if( parseInt( localStorage.getItem("score") ) !== 0) {
+			if( localStorage.getItem("score") ) {
 				var score = parseInt( localStorage.getItem("score") );
 			}
 			else {
@@ -339,20 +341,19 @@
 
 			// 23/12/18: set the high score
 			var scoreCounter = function() {
-				debugger
 
-				if(localStorage.getItem("highScore")){
-					debugger
+				if(localStorage.getItem("highScore")){		
 					console.log("meh");
 					document.querySelector('#highestScore').textContent = localStorage.getItem("highScore");
 				} else {
+					
 					document.querySelector('#highestScore').textContent =  "No high score recorded yet";
 					localStorage.setItem("highScore", score);
 				}
 				
 
 				if( score > parseInt( localStorage.getItem("highScore") )) {
-					debugger
+					
 					localStorage.setItem("highScore", score);
 					document.querySelector('#highestScore').textContent =  parseInt( localStorage.getItem("highScore") );
 				}
@@ -370,6 +371,8 @@
 			 * - Allows the ball to dissapear below the canvas, ending the game.
 			 */
 			var draw = function() {
+
+				
 
 				// Clear the canvas and re-draw everything
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
