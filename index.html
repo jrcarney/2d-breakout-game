@@ -199,6 +199,10 @@
 				var levelNumber = 1;
 			}
 
+			// Load the background music
+			var jingle = new Audio('jingle.mp3');
+			var brickDestroyed = new Audio('handbell.mp3');
+
 			// ############################################################ //
 			// @tag: testMode / test mode
 			// @JC 23/12/18: set this to true to enter test game mode. only use for testing!!
@@ -283,12 +287,21 @@
 
 						// Check for bricks that still exist
 						if (b.status == 1) {
-							if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+							if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {					
 								dy = -dy;
 
 								// Will force the destroyed brick to no longer render
 								b.status = 0;
 								bricksDestroyedCount++;
+
+								//  play brick destroyed sound											
+								var promise = brickDestroyed.play();
+								if (promise !== undefined) {
+									promise.then(_ => {								
+									brickDestroyed.play();
+								}).catch(error => {});
+								}							
+													
 								drawScore();
 								isGameComplete();
 							}
@@ -439,7 +452,7 @@
 				drawBricks();
 				drawBall();
 				drawPaddle();
-				collisionDetection();
+				collisionDetection();				
 
 				x += dx;
 				y += dy;
@@ -529,7 +542,7 @@
 
 			// @JC 24/12/18: dispaly the level number in the UI
 			var levelNumberUi = function() {
-				debugger
+				
 				if(localStorage.getItem('level')) {
 					document.querySelector('#currentLevel').textContent = localStorage.getItem('level');
 				} else {
@@ -549,7 +562,14 @@
 			draw();
 			// End enter the draw loop
 
+			// Draw the level UI
 			levelNumberUi();
+
+			// Play background music after its been loaded
+			setInterval(function() {
+				jingle.play();	
+				jingle.loop = true;	
+			}, 1000);			
 
 			/********************************************************/
 			// # EVENTS
