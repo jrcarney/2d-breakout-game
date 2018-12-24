@@ -28,6 +28,10 @@
 			display: block;
 			margin: 0 auto;
 		}
+
+		#nextLevel {
+			display: none;
+		}
 	</style>
 </head>
 
@@ -35,16 +39,19 @@
 	
 	<canvas id="myCanvas" width="480" height="320"></canvas>
 	<div id="gameOverContainer" style="position: absolute; bottom: 0;">
-		<p id="gameOver"></p>
-		<button id="restartLevel"></button>
+		<h2 id="gameOver"></h2>
+		<button id="restartLevel">Restart level</button>
 		<button id="nextLevel"></button>
+		<button id="newGame">Reset to level one</button>
 		<div id="scoreContainer">
 			<p id="scoreText">Current Score: </p>
 			<p id="score"></p>
 		</div>
-		<p id="highestScoreText">Highest score recorded:</p>
+		<p id="highestScoreText">Highest score:</p>
 		<p id="highestScore"></p>
-		<button id="newGame">Reset to level one</button>
+		<p id="currentLevelText">Current level:</p>
+		<p id="currentLevel"></p>
+	
 	</div>
 	<div class="snowContainer" style="width: 100%; height: 80%;"></div>
 
@@ -311,6 +318,7 @@
 					document.querySelector('#gameOver').textContent = "Level complete";
 					
 					// @JC 23/12/18: Display the next level button
+					document.querySelector('#nextLevel').style.display = "block";
 					document.querySelector('#nextLevel').textContent = "Go to next level";
 
 					// @JC 23/12/18: might need to remove
@@ -429,7 +437,10 @@
 
 				}
 
+				// Update the score and high score
 				scoreCounter();
+
+				// 
 
 				/**
 				 * @function logDrawFn
@@ -464,6 +475,17 @@
 				}
 			};
 
+			// @JC 24/12/18: dispaly the level number in the UI
+			var levelNumberUi = function() {
+				debugger
+				if(localStorage.getItem('level')) {
+					document.querySelector('#currentLevel').textContent = localStorage.getItem('level');
+				} else {
+					document.querySelector('#currentLevel').textContent = 1
+				}
+				
+			};
+
 			/********************************************************/
 			// # ENTER THE DRAW LOOP
 			/********************************************************/
@@ -473,8 +495,9 @@
 			
 			// Calls draw which runs requestAnimationFrame(draw);
 			draw();
-
 			// End enter the draw loop
+
+			levelNumberUi();
 
 			/********************************************************/
 			// # EVENTS
@@ -542,19 +565,17 @@
 					window.location.reload();
 				}
 			};
-
 			document.addEventListener("click", nextLevel, false);	
 			
-			// 23/12/18: 
+			// 23/12/18: reset game to level one
 			var newGame = function(e) {
 				if(e.target.id == 'newGame') {
 					localStorage.setItem("dx", 3);
 					localStorage.setItem("dy", -3);
 					localStorage.setItem("level",1);
-				}
-				
+					window.location.reload();
+				}				
 			};
-
 			document.addEventListener("click", newGame, false);
 
 		}());
