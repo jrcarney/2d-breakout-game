@@ -34,7 +34,7 @@
 
 			// Initialise the paddle
 			var paddleHeight = 10;
-			var paddleWidth = 175;
+			var paddleWidth = 125;
 			var paddleX = (canvas.width - paddleWidth) / 2;
 
 			// Buttons
@@ -169,13 +169,13 @@
 								b.status = 0;
 								bricksDestroyedCount++;
 
-								//  play brick destroyed sound											
+								//  play brick destroyed sound ( Create file on the fly to avoid timing issues )											
+								var brickDestroyed = new Audio('handbell.mp3');	
 								var promise = brickDestroyed.play();
 								if (promise !== undefined) {
 									promise.then(_ => {		
-                                        // Create file on the fly to avoid timing issues
-                                    var brickDestroyed = new Audio('handbell.mp3');						
-									brickDestroyed.play();
+                                                                       					
+										brickDestroyed.play();
 								}).catch(error => {});
 								}							
 													
