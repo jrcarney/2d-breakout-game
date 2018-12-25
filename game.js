@@ -254,7 +254,7 @@
 					
 					// Display the next level button
 					document.querySelector('#nextLevel').style.display = "block";
-					document.querySelector('#nextLevel').textContent = "Go to next level";
+					document.querySelector('#nextLevel').textContent = "Next level";
 
 					// Stop the game loop
 					stop = true;

@@ -7,10 +7,13 @@
 </head>
 <body style="height: 100%">
 	<canvas id="gameCanvas" width="900" height="620"></canvas>
-	<div id="gameOver">
-		<h2 id="gameOver"></h2>
+	<div id="gameOverContainer">
+		<h2 id="gameOver"></h2>		
 	</div>
-	<div id="gameOverContainer">		
+	<div id="nextLevelContainer">
+		<button id="nextLevel" class="btn"></button>
+	</div>
+	<div id="gameStatsContainer">		
 		<div id="scoreStats">
 			<p id="scoreText">Current Score: </p>
 			<p id="score"></p>
@@ -23,7 +26,6 @@
 		</div>			
 		<div id="gameStats" class="">
 			<button id="restartLevel" class="btn">Restart level</button>
-			<button id="nextLevel" class="btn"></button>
 			<button id="newGame" class="btn">Reset to level one</button>
 		</div>	
 	</div>
