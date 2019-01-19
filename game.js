@@ -9,6 +9,13 @@
 			// Store reference to the canvas element
 			var canvas = document.getElementById("gameCanvas");
 
+			// @JC 19/1/19: try to get the viewport, then set the view port width as the canvas width.				
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight -150;
+			// canvas.width = screen.width;
+			// canvas.height = screen.height;
+
+
 			// Store reference to 2D rendering context
 			// - the tool we can use for painting to the Canvas
 			var ctx = canvas.getContext("2d");
@@ -302,6 +309,9 @@
 			 * - Allows the ball to dissapear below the canvas, ending the game.
 			 */
 			var draw = function() {
+
+			
+
 				// Clear the canvas and re-draw everything
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				drawBricks();
