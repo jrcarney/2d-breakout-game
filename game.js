@@ -344,9 +344,11 @@
 				 * on whether the left or right buttons were pressed.
 				 */
 				if (rightPressed && paddleX < canvas.width - paddleWidth) {
+					debugger
 					paddleX += 7;
 
 				} else if (leftPressed && paddleX > 0) {
+					debugger
 					paddleX -= 7;
 
 				}
@@ -441,6 +443,102 @@
 			};
 			document.addEventListener("keyup", keyUpHandler, false);
 
+			/* touch events */
+			var ongoingTouches = [];
+
+			var handleStart = function(evt) {
+				//debugger
+				//evt.preventDefault();
+				// console.log("touchstart.");
+				// var el = document.getElementsByTagName("canvas")[0];
+				// var ctx = el.getContext("2d");
+				var touches = evt.changedTouches;
+						
+				for (var i = 0; i < touches.length; i++) {
+					console.log("touchstart:" + i + "...");
+					ongoingTouches.push(copyTouch(touches[i]));
+					// var color = colorForTouch(touches[i]);
+					// ctx.beginPath();
+					// ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
+					// ctx.fillStyle = color;
+					// ctx.fill();
+					console.log("touchstart:" + i + ".");
+				}
+			};
+
+			var touchCounter = 500;
+
+			function handleMove(evt) {
+				debugger
+				//evt.preventDefault();
+				// var el = document.getElementsByTagName("canvas")[0];
+				//var ctx = el.getContext("2d");
+				var touches = evt.changedTouches;
+		
+				for (var i = 0; i < touches.length; i++) {
+					//var color = colorForTouch(touches[i]);
+					var idx = ongoingTouchIndexById(touches[i].identifier);
+		
+					if (idx >= 0) {
+					console.log("continuing touch "+idx);
+					//ctx.beginPath();
+					console.log("ctx.moveTo(" + ongoingTouches[idx].pageX + ", " + ongoingTouches[idx].pageY + ");");
+					//ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+					console.log("ctx.lineTo(" + touches[i].pageX + ", " + touches[i].pageY + ");");
+					// ctx.lineTo(touches[i].pageX, touches[i].pageY);
+					// ctx.lineWidth = 4;
+					// ctx.strokeStyle = color;
+					// ctx.stroke();
+		
+					ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+					console.log(".");
+					} else {
+					console.log("can't figure out which touch to continue");
+					}
+
+					
+
+					if(ongoingTouches[idx].pageX < touchCounter) {
+						touchCounter = ongoingTouches[idx].pageX;
+						paddleX -= 12;
+					} 
+
+					if(ongoingTouches[idx].pageX > touchCounter) {
+						touchCounter = ongoingTouches[idx].pageX;
+						paddleX += 12;
+					}
+				}
+			}
+
+			
+			function copyTouch(touch) {
+				return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
+			}   
+			
+			function ongoingTouchIndexById(idToFind) {
+				for (var i = 0; i < ongoingTouches.length; i++) {
+					var id = ongoingTouches[i].identifier;
+					
+					if (id == idToFind) {
+					return i;
+					}
+				}
+				return -1;    // not found
+			}
+
+			// var handleEnd = function(e) {
+			// 	//  	debugger
+			// 	//alert("im made by the touch start event");
+			// 	console.log(e);
+			// 	debugger
+			// 	var touchobj = e.changedTouches[0];
+			// 	leftPressed = true;
+			// };
+
+			document.addEventListener("touchstart", handleStart, false);			
+			//document.addEventListener("touchstart", handleEnd, false);			
+			document.addEventListener("touchmove", handleMove, false);			
+
 			/**
 			 * Handle restarting of the game
 			 */
@@ -507,4 +605,7 @@
 			};
 			document.addEventListener("click", newGame, false);
 
+			window.onload = function() {
+				var input = document.querySelector("#gameCanvas").focus();
+			  }
 		}());
