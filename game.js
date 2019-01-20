@@ -18,6 +18,8 @@
 			if(window.innerWidth < 900) {	
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight; //-150;
+
+				var smallSCreen = true;
 			} else {
 				canvas.width = 900;
 				canvas.height = 620;
@@ -56,13 +58,88 @@
 			var leftPressed = false;
 
 			// Bricks: Initialise the amount and shape and padding
-			var brickRowCount = 3;
-			var brickColumnCount = 10;
-			var brickWidth = 75;
-			var brickHeight = 20;
-			var brickPadding = 10;
-			var brickOffsetTop = 30;
-			var brickOffsetLeft = 30;
+			// If we are on screens smaller than 900, then change the brick width so there isnt lots of white space on the right side of the bricks.
+			if(smallSCreen) {
+				var brickRowCount = 3;
+				var brickColumnCount = 10;
+				var brickWidth = 80;
+				var brickHeight = 10;
+				var brickPadding = 5;
+				var brickOffsetTop = 15;
+				var brickOffsetLeft = 15;
+
+				var totalBrickWidth = brickColumnCount * brickWidth;
+				var bricksPlusLeftOffset = totalBrickWidth + brickOffsetLeft;
+				var bricksPlusPadding = bricksPlusLeftOffset + brickPadding;
+				// console.log(bricksPlusPadding);
+	
+				var spaceLeftOver = window.innerWidth - bricksPlusPadding;
+				//console.log(spaceLeftOver);
+	// debugger
+				console.log(window.innerWidth);
+
+				// not a great solution but solves the white space issue with the bricks.
+				switch(true) {
+					case (window.innerWidth > 850 && window.innerWidth < 900):
+						brickWidth = 80;
+						break;
+					case (window.innerWidth > 800 && window.innerWidth < 850):
+						brickWidth = 75;
+						break;
+					case (window.innerWidth > 750 && window.innerWidth < 800):
+						brickWidth = 70;
+						break;
+					case (window.innerWidth > 700 && window.innerWidth < 750):
+						brickWidth = 65;
+						break;
+					case (window.innerWidth > 650 && window.innerWidth < 700):
+						brickWidth = 60;
+						break;
+					case (window.innerWidth > 600 && window.innerWidth < 650):
+						brickWidth = 55;
+						break;
+					case (window.innerWidth > 550 && window.innerWidth < 600):
+						brickWidth = 50;
+						break;
+					case (window.innerWidth > 500 && window.innerWidth < 550):
+						brickWidth = 45;
+						break;
+					case (window.innerWidth > 450 && window.innerWidth < 500):
+						brickWidth = 40;
+						break;
+					case (window.innerWidth > 400 && window.innerWidth < 450):
+						brickWidth = 35;
+						break;
+					case (window.innerWidth > 350 && window.innerWidth < 400):
+						brickWidth = 30;
+						break;
+					case (window.innerWidth > 300 && window.innerWidth < 350):
+						brickWidth = 25;
+						break;
+					case (window.innerWidth > 250 && window.innerWidth < 300):
+						brickWidth = 20;
+						break;
+					case (window.innerWidth > 200 && window.innerWidth < 250):
+						brickWidth = 15;
+						break;
+					case (window.innerWidth > 150 && window.innerWidth < 200):
+						brickWidth = 10;
+						break;
+					default:
+						break;
+				}
+
+				console.log(brickWidth);
+
+			} else {
+				var brickRowCount = 3;
+				var brickColumnCount = 10;
+				var brickWidth = 75;
+				var brickHeight = 20;
+				var brickPadding = 10;
+				var brickOffsetTop = 30;
+				var brickOffsetLeft = 30;
+			}
 
 			// Bricks - 2D array: Each bricks array element Contains an object
 			// containing the x and y position to paint each brick on the screen.
