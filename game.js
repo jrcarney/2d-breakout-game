@@ -7,14 +7,21 @@
 			/********************************************************/
 
 			// Store reference to the canvas element
-			var canvas = document.getElementById("gameCanvas");
+			var canvas = document.getElementById("gameCanvas");			
+			
+			// Log the screen width and height
+			// console.log(window.innerWidth);
+			// console.log(window.innerHeight);
 
-			// @JC 19/1/19: try to get the viewport, then set the view port width as the canvas width.				
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight -150;
-			// canvas.width = screen.width;
-			// canvas.height = screen.height;
-
+			// If we are on a screen smaller than 900px (phones, tablets etc) then render the canvas the same size as the screen.
+			// If we are on a desktop (more than likely the screen is wider than 900px), then set the canvas to a fixed 900px wide and 620px high.
+			if(window.innerWidth < 900) {	
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight; //-150;
+			} else {
+				canvas.width = 900;
+				canvas.height = 620;
+			}
 
 			// Store reference to 2D rendering context
 			// - the tool we can use for painting to the Canvas
@@ -353,14 +360,10 @@
 				 * Move the paddle on the left or right side of the canvas based
 				 * on whether the left or right buttons were pressed.
 				 */
-				if (rightPressed && paddleX < canvas.width - paddleWidth) {
-					debugger
+				if (rightPressed && paddleX < canvas.width - paddleWidth) {					
 					paddleX += 7;
-
-				} else if (leftPressed && paddleX > 0) {
-					debugger
+				} else if (leftPressed && paddleX > 0) {					
 					paddleX -= 7;
-
 				}
 
 				// Update the score and high score
@@ -479,7 +482,7 @@
 			var touchCounter = 500;
 
 			function handleMove(evt) {
-				debugger
+				// debugger
 				//evt.preventDefault();
 				// var el = document.getElementsByTagName("canvas")[0];
 				//var ctx = el.getContext("2d");
