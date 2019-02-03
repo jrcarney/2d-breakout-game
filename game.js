@@ -547,15 +547,15 @@
 			levelNumberUi();
 
 			// Play background music after its been loaded
-			setInterval(function() {
-                var jinglepromise = jingle.play();
-                if (jinglepromise !== undefined) {
-                    jinglepromise.then(_ => {								
-                        jingle.play();
-                        jingle.loop = true;
-                }).catch(error => {});
-                }	                
-			}, 1000);			
+			// setInterval(function() {
+            //     var jinglepromise = jingle.play();
+            //     if (jinglepromise !== undefined) {
+            //         jinglepromise.then(_ => {								
+            //             jingle.play();
+            //             jingle.loop = true;
+            //     }).catch(error => {});
+            //     }	                
+			// }, 1000);			
 
 			/********************************************************/
 			// # EVENTS
