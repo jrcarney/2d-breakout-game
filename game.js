@@ -80,50 +80,99 @@
 
 				// not a great solution but solves the white space issue with the bricks.
 				switch(true) {
-					case (window.innerWidth > 850 && window.innerWidth < 900):
+					case (window.innerWidth > 876 && window.innerWidth < 900):
 						brickWidth = 80;
 						break;
-					case (window.innerWidth > 800 && window.innerWidth < 850):
+					case (window.innerWidth >= 850 && window.innerWidth < 875):
+						brickWidth = 77.5;
+						break;
+					case (window.innerWidth >= 825 && window.innerWidth <= 850):
 						brickWidth = 75;
 						break;
-					case (window.innerWidth > 750 && window.innerWidth < 800):
+					case (window.innerWidth >= 800 && window.innerWidth <= 824):
+						brickWidth = 72.5;
+						break;
+					case (window.innerWidth >= 775 && window.innerWidth <= 799):
 						brickWidth = 70;
 						break;
-					case (window.innerWidth > 700 && window.innerWidth < 750):
+					case (window.innerWidth >= 750 && window.innerWidth <= 774):
+						brickWidth = 67.5;
+						break;
+					case (window.innerWidth >= 725 && window.innerWidth <= 749):
 						brickWidth = 65;
 						break;
-					case (window.innerWidth > 650 && window.innerWidth < 700):
+					case (window.innerWidth >= 700 && window.innerWidth <= 724):
+						brickWidth = 62.5;
+						break;
+					case (window.innerWidth >= 675 && window.innerWidth <= 699):
 						brickWidth = 60;
 						break;
-					case (window.innerWidth > 600 && window.innerWidth < 650):
+					case (window.innerWidth >= 650 && window.innerWidth <= 674):
+						brickWidth = 57.5;
+						break;
+					case (window.innerWidth >= 625 && window.innerWidth <= 649):
 						brickWidth = 55;
 						break;
-					case (window.innerWidth > 550 && window.innerWidth < 600):
+					case (window.innerWidth > 600 && window.innerWidth <= 624):
+						brickWidth = 52.5;
+						break;
+					case (window.innerWidth > 575 && window.innerWidth <= 599):
 						brickWidth = 50;
 						break;
-					case (window.innerWidth > 500 && window.innerWidth < 550):
+					case (window.innerWidth > 550 && window.innerWidth <= 574):
+						brickWidth = 47.5;
+						break;
+					case (window.innerWidth > 525 && window.innerWidth <= 549):
 						brickWidth = 45;
 						break;
-					case (window.innerWidth > 450 && window.innerWidth < 500):
+
+					case (window.innerWidth > 500 && window.innerWidth <= 524):
+						brickWidth = 42.5;
+						break;
+
+			///////
+					case (window.innerWidth > 475 && window.innerWidth <= 499):
 						brickWidth = 40;
 						break;
-					case (window.innerWidth > 400 && window.innerWidth < 450):
+					case (window.innerWidth > 450 && window.innerWidth <= 474):
+						brickWidth = 37.5;
+						break;
+					case (window.innerWidth > 425 && window.innerWidth <= 449):
 						brickWidth = 35;
 						break;
-					case (window.innerWidth > 350 && window.innerWidth < 400):
+					case (window.innerWidth > 400 && window.innerWidth <= 424):
+						brickWidth = 32.5;
+						break;
+					case (window.innerWidth > 375 && window.innerWidth <= 399):
 						brickWidth = 30;
 						break;
-					case (window.innerWidth > 300 && window.innerWidth < 350):
+					case (window.innerWidth > 350 && window.innerWidth <= 374):
+						brickWidth = 27.5;
+						break;
+					case (window.innerWidth > 325 && window.innerWidth <= 349):
 						brickWidth = 25;
 						break;
-					case (window.innerWidth > 250 && window.innerWidth < 300):
+					case (window.innerWidth > 300 && window.innerWidth <= 324):
+						brickWidth = 22.5;
+						break;
+			///////
+					case (window.innerWidth > 300 && window.innerWidth <= 324):
 						brickWidth = 20;
 						break;
-					case (window.innerWidth > 200 && window.innerWidth < 250):
+					case (window.innerWidth > 275 && window.innerWidth <= 299):
+						brickWidth = 17.5;
+						break;
+					case (window.innerWidth > 300 && window.innerWidth <= 324):
 						brickWidth = 15;
 						break;
-					case (window.innerWidth > 150 && window.innerWidth < 200):
+					case (window.innerWidth > 300 && window.innerWidth <= 324):
+						brickWidth = 12.5;
+						break;
+					case (window.innerWidth > 300 && window.innerWidth <= 324):
 						brickWidth = 10;
+						break;
+					case (window.innerWidth > 300 && window.innerWidth <= 324):
+						brickWidth = 7.5;
 						break;
 					default:
 						break;
