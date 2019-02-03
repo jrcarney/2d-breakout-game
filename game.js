@@ -246,10 +246,10 @@
 			var drawBall = function() {
 				ctx.beginPath();
 				ctx.arc(x, y, ballRadius, 0, Math.PI * 2, false);
-				ctx.fillStyle = "#226fff";				
+				ctx.fillStyle = "white";				
 				ctx.fill();			
 				ctx.lineWidth = 3;
-				ctx.strokeStyle = "black";
+				ctx.strokeStyle = "white";
 				ctx.stroke();
 				ctx.closePath();
 			};
@@ -261,7 +261,7 @@
 			var drawPaddle = function() {
 				ctx.beginPath();
 				ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-				ctx.fillStyle = "darkred";
+				ctx.fillStyle = "black";
 				ctx.fill();
 				ctx.closePath();
 			};
@@ -282,7 +282,7 @@
 							bricks[c][r].y = brickY;
 							ctx.beginPath();
 							ctx.rect(brickX, brickY, brickWidth, brickHeight);
-							ctx.fillStyle = "green";
+							ctx.fillStyle = "#890026";
 							ctx.fill();
 							ctx.closePath();
 						}
