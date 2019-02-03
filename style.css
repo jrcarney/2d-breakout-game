@@ -37,6 +37,12 @@ html {
     }
 }
 
+@media screen and (max-width : 899px) {
+    #gameCanvas {
+        background-image: url("white-bricks-blurred.jpg");
+    }
+}
+
 #nextLevel {
     display: none;
 }
