@@ -1,0 +1,107 @@
+html {
+    background-image: url(snowman-game-background.jpg);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    font-family: cursive;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/**
+ * Styles used for desktop gameplay.
+ */
+@media screen and (min-width : 900px) {
+    /* Game canvas used for desktop gameplay */
+    #gameCanvas {
+        /* max-width: 900px;
+        max-height: 620px; */
+        background: #eee;
+        background-image: url("snowman.jpg");
+        background-size: 1100px;     
+        display: block;
+        margin: 0 auto;
+        -webkit-box-shadow: 0px 3px 10px 2px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 3px 10px 2px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    }
+    
+    /* Stats counter used for desktop gameplay */
+    #gameStatsContainer {
+        width: 900px;
+    }
+}
+
+#nextLevel {
+    display: none;
+}
+
+.snowContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: -999;
+}
+
+#gameOver {
+    text-align: center;
+    font-size: 30px;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-shadow: 0px 0px 10px #cf0307;
+    color: white;
+}
+
+#gameStatsContainer {		    
+    z-index: 999;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    /* width: 900px; */
+    margin: 0 auto;
+    background: #edecea;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    -webkit-box-shadow: 0px 3px 10px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 10px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+}
+
+#score,
+#highestScore,
+#currentLevel {
+    font-weight: bold;
+}
+
+#restartLevel {
+    background: #b76700;
+}
+
+#newGame {
+    background-color: #bb0202;
+}
+
+#nextLevel {
+    background-color: green;
+    display: none;
+    border-radius: 0px;
+    width: 900px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.btn {	
+    display: block;
+    margin-bottom: 5px;
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    width: 100%;
+}
