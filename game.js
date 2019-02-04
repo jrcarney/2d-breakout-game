@@ -635,16 +635,19 @@
 					console.log("can't figure out which touch to continue");
 					}
 
-					
-
-					if(ongoingTouches[idx].pageX < touchCounter) {
+					if( (ongoingTouches[idx].pageX < touchCounter) && ( paddleX > 0) )  {
 						touchCounter = ongoingTouches[idx].pageX;
 						paddleX -= 12;
+						// console.log(paddleX);						
+						// console.log(canvas.width - paddleWidth);
+						
 					} 
 
-					if(ongoingTouches[idx].pageX > touchCounter) {
+					if( (ongoingTouches[idx].pageX > touchCounter) && ( paddleX < canvas.width - paddleWidth)  ) {
 						touchCounter = ongoingTouches[idx].pageX;
 						paddleX += 12;
+						// console.log(paddleX);
+						// console.log(canvas.width - paddleWidth);
 					}
 				}
 			}
