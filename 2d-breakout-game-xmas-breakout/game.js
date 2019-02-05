@@ -637,12 +637,12 @@
 
 					
 
-					if(ongoingTouches[idx].pageX < touchCounter) {
+					if( (ongoingTouches[idx].pageX < touchCounter) && ( paddleX > 0)  ) {
 						touchCounter = ongoingTouches[idx].pageX;
 						paddleX -= 12;
 					} 
 
-					if(ongoingTouches[idx].pageX > touchCounter) {
+					if( (ongoingTouches[idx].pageX > touchCounter) && ( paddleX < canvas.width - paddleWidth)  ) {
 						touchCounter = ongoingTouches[idx].pageX;
 						paddleX += 12;
 					}
