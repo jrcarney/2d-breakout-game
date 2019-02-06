@@ -10,14 +10,42 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
-    </head>
+        <style>
+            html {
+                background-image: url("break-splash.png");
+                background-repeat: no-repeat;
+                   background-size: 100%;
+            }
+
+            button {
+                background: black;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                padding: 20px;
+                font-size: 30px;
+                font-family: fantasy;
+                margin-top: 20px;
+                margin-left: 50px;
+            }
+
+            @media screen and (max-width : 900px) {
+                button {
+                    font-size: 12px;
+                    margin: 0;
+                    padding: 10px;
+                }
+
+            }
+        </style>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <button id="loadBreakout">Load Breakout</button>
-        <button id="loadChristmasBreakout">Load Christmas Breakout</button>
-        
+        <div style="text-align: center;">
+            <button id="loadBreakout">Load Breakout</button>
+            <button id="loadChristmasBreakout">Load Christmas Breakout</button>
+        </div>
         <script>
 
             document.getElementById('loadBreakout').addEventListener('click', function() {
